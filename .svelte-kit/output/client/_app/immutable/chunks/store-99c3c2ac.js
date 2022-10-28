@@ -1,0 +1,1 @@
+import{w as e}from"./index-0c606873.js";const i=e({isAuth:!0,id:11,name:"Abraham Paciente 11",profile:"/img/user.png",role:"Paciente"}),r=e({id:1,especialidad:"General",fecha:new Date,posiblesEnfermedades:[]});export{r as d,i as u};

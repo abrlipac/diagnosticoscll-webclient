@@ -1,0 +1,3 @@
+C:\Users\alipa\Mega\Desktop\Proyecto Diagnosticos\Software\Diagnosticos CLL\src\Frontend\WebClient\obj\Debug\WebClient.njsproj.AssemblyReference.cache
+C:\Users\alipa\Mega\Desktop\Proyecto Diagnosticos\Software\Diagnosticos CLL\src\Frontend\WebClient\obj\Debug\WebClient.njsproj.CoreCompileInputs.cache
+C:\Users\alipa\Mega\Desktop\Proyecto Diagnosticos\Software\Diagnosticos CLL\src\Frontend\WebClient\bin\Microsoft.NodejsTools.WebRole.dll
