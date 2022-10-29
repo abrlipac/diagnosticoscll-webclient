@@ -12,7 +12,6 @@
   let mensajes = []
   let preguntasRespuestas
   let noHayMasPreguntas = false
-  let esMensajeInvalido = false
 
   let especialidades
   let especialidadId
@@ -146,13 +145,22 @@
           await generarDiagnostico()
         }
       } else {
-        // volver a mostrar la pregunta
-        esMensajeInvalido = true
+        // mostrar error y volver a mostrar la pregunta
+        mostrarError()
         mostrarPregunta()
       }
     }
     // limpiar el input
     datoIngresado = ''
+  }
+
+  function mostrarError() {
+    // mostrar mensaje de error
+      mensajes.push({
+        esPregunta: true,
+        contenido: 'La respuesta ingresada no es válida',
+      })
+      actualizarMensajes()
   }
 
   function mostrarPregunta() {
@@ -223,14 +231,6 @@
     bind:this={chatbotMessages}>
     <Mensaje mensaje={{ contenido: 'Bienvenido!', esPregunta: true }} />
     {#each mensajes as mensaje}
-      {#if esMensajeInvalido}
-        <Mensaje
-          mensaje={{
-            contenido: 'Ingrese o elija un dato válido',
-            esPregunta: true,
-          }} />
-        {(esMensajeInvalido = false)}
-      {/if}
       {#if mensaje.opciones && mensaje.opciones.length > 0}
         <Mensaje
           {mensaje}
