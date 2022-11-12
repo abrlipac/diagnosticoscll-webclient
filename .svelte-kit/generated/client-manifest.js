@@ -8,18 +8,22 @@ export { matchers } from './client-matchers.js';
 	() => import('./nodes/5'),
 	() => import('./nodes/6'),
 	() => import('./nodes/7'),
-	() => import('./nodes/8')];
+	() => import('./nodes/8'),
+	() => import('./nodes/9'),
+	() => import('./nodes/10')];
 
 			export const server_loads = [];
 
 			export const dictionary = {
 	"/": [2],
-	"/diagnosticos/nuevo": [3],
-	"/diagnosticos/paciente": [4],
-	"/diagnosticos/resultados": [5],
-	"/diagnosticos/[id]": [6],
-	"/login": [7],
-	"/signup": [8]
+	"/diagnosticos/editar": [3],
+	"/diagnosticos/nuevo": [4],
+	"/diagnosticos/paciente": [5],
+	"/diagnosticos/paciente/editar": [6],
+	"/diagnosticos/resultados": [7],
+	"/diagnosticos/ver": [8],
+	"/login": [9],
+	"/signup": [10]
 };
 
 			export const hooks = {

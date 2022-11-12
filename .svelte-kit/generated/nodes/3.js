@@ -1,1 +1,1 @@
-export { default as component } from "..\\..\\..\\src\\routes\\diagnosticos\\nuevo\\+page.svelte";
+export { default as component } from "..\\..\\..\\src\\routes\\diagnosticos\\editar\\+page.svelte";

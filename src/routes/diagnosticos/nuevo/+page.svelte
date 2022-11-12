@@ -1,5 +1,5 @@
 <script>
-  import Chatbot from '../../../components/Chatbot.svelte'
+  import Chatbot from '$lib/components/Chatbot.svelte'
 </script>
 
 <h1 class="text-center mt-4">Generar diagnóstico</h1>
