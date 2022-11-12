@@ -6,7 +6,7 @@
   import { config } from '$lib/config.js'
   import axios from 'axios'
 
-  const diagnosticosApi = config.urls.apiDiagnosticos
+  const apiDiagnosticos = config.urls.apiDiagnosticos
 
   let iter = -1
   let datoIngresado = ''

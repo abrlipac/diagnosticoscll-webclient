@@ -1,9 +1,11 @@
 <script>
-  import { userStore, diagnosticoStore } from '$lib/store.js'
-  import { goto } from '$app/navigation'
+  import { diagnosticoStore } from '$lib/store.js'
   import { get } from 'svelte/store'
   import { onMount } from 'svelte'
   import axios from 'axios'
+  import { config } from '$lib/config.js'
+
+  const apiDiagnosticos = config.urls.apiDiagnosticos
 
   let diagnostico = get(diagnosticoStore)
   let enfermedades

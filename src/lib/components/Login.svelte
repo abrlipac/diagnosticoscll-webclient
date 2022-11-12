@@ -6,7 +6,7 @@
   import auth from '$lib/auth.js'
   import { config } from '$lib/config.js'
 
-  const identityApi = config.urls.apiIdentity
+  const apiIdentity = config.urls.apiIdentity
 
   let errors = []
   let correctLogin = false
@@ -22,7 +22,7 @@
 
   async function iniciarSesion() {
     let response = await axios
-      .post(`${identityApi}/identity/auth`, user)
+      .post(`${apiIdentity}/identity/auth`, user)
       .catch((error) => {
         errors = error.response.data.errors
       })

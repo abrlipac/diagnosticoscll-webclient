@@ -2,6 +2,10 @@
   import axios from 'axios'
   import { format } from 'date-fns'
   import { goto } from '$app/navigation'
+  import { config } from '$lib/config.js'
+
+  const apiIdentity = config.urls.apiIdentity
+  const apiClientes = config.urls.apiClientes
 
   let errors = []
 
@@ -40,10 +44,10 @@
 
     console.log(usuario)
 
-    let response = await axios.post('http://localhost:10003/identity/', usuario)
+    let response = await axios.post(`${apiIdentity}/identity/`, usuario)
     if (response.status === 200 && response.data.succeeded) {
       response = await axios.get(
-        `http://localhost:10003/usuarios/${usuarioPaciente.userName}`
+        `${apiIdentity}/usuarios/${usuarioPaciente.userName}`
       )
       if (response.status === 200) {
         usuarioPaciente.paciente.usuario_id = response.data.content.id
@@ -51,7 +55,7 @@
         usuarioPaciente.paciente.sexo = parseInt(usuarioPaciente.paciente.sexo)
 
         response = await axios.post(
-          'http://localhost:10001/pacientes/',
+          `${apiClientes}/pacientes/`,
           usuarioPaciente.paciente
         )
         if (response.status === 201) {

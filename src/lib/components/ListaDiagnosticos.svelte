@@ -1,6 +1,9 @@
 <script>
   import { onMount } from 'svelte'
   import axios from 'axios'
+  import { config } from '$lib/config.js'
+
+  const apiDiagnosticos = config.urls.apiDiagnosticos
 
   export let accion
 

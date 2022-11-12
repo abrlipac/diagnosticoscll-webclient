@@ -2,9 +2,11 @@
   import { onMount } from 'svelte'
   import axios from 'axios'
   import { goto } from '$app/navigation'
+  import { config } from '$lib/config.js'
+
+  const apiDiagnosticos = config.urls.apiDiagnosticos
 
   let diagnostico = {}
-  let diagnosticoGenerado = {}
   let preguntas
   let seGeneroDiagnostico = false
 
