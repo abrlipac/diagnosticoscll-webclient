@@ -2,12 +2,11 @@
   import Chatbot from '$lib/components/Chatbot.svelte'
 </script>
 
-<h1 class="text-center mt-4">Generar diagnóstico</h1>
-<h4 class="text-center">Responda las preguntas planteadas</h4>
-<hr class="col-md-4 mx-auto" />
-
-<div class="row justify-content-center">
-  <div class="col col-md-6">
+<div class="col-lg-5 col-md-7 col-sm-8 col p-4">
+  <h1 class="text-center display-5">Generar diagnóstico</h1>
+  <h4 class="text-center">Responda las preguntas planteadas</h4>
+  <hr />
+  <div class="row justify-content-center">
     <Chatbot />
   </div>
 </div>

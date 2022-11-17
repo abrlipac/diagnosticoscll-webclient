@@ -27,8 +27,8 @@
 </script>
 
 <div
-  class="container mb-3 d-flex flex-row {!mensaje.esPregunta
-    ? 'justify-content-end'
+  class="container d-flex flex-row {!mensaje.esPregunta
+    ? 'justify-content-end mb-3'
     : ''}">
   {#if mensaje.esPregunta}
     <div class="chatbot__boticon rounded-circle pr-2 align-self-start">
@@ -37,10 +37,19 @@
   {/if}
   <div>
     <div
-      class="chatbot__message btn btn-outline-primary text-wrap text-start {!mensaje.esPregunta
-        ? 'fw-bold'
-        : ''}">
+      class="chatbot__message btn text-wrap text-start {!mensaje.esPregunta
+        ? 'btn-primary'
+        : 'btn-outline-primary'}">
       {mensaje.contenido}
+      {#if mensaje.esPregunta && !['Bienvenido! 🙂', 'Muchas gracias por responder las preguntas! 🙂', 'Se han generado los resultados! ✅', 'Inténtelo más tarde...', '... 🤔'].includes(mensaje.contenido)}
+        {#if !mensaje.contenido.includes('Elija una especialidad 👇') && !mensaje.contenido.startsWith('❌')}
+          {#if mensaje.opciones && mensaje.opciones.length > 0}
+            Elija una opción 👇
+          {:else}
+            🤔
+          {/if}
+        {/if}
+      {/if}
     </div>
     {#if mensaje.opciones != null}
       <div class="chatbot__options d-flex pt-1">
