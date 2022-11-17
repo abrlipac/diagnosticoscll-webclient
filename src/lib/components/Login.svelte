@@ -41,57 +41,51 @@
   }
 </script>
 
-{#if errors.length > 0}
-  <div class="alert alert-danger">
-    {#each errors as error}
-      <div>{error}</div>
-    {/each}
-  </div>
-{/if}
+<div class="col">
+  {#if errors.length > 0}
+    <div class="alert alert-danger">
+      {#each errors as error}
+        <div>{error}</div>
+      {/each}
+    </div>
+  {/if}
 
-{#if correctLogin}
-  <div class="alert alert-success">
-    <p>Ha iniciado sesión correctamente</p>
-  </div>
-{/if}
+  {#if correctLogin}
+    <div class="alert alert-success">
+      <p>Ha iniciado sesión correctamente</p>
+    </div>
+  {/if}
 
-<div class="row justify-content-center">
-  <div class="col">
-    <form on:submit|preventDefault={handleLogin}>
-      <div class="text-danger" />
-
-      <div class="form-floating mb-3">
-        <input
-          bind:value={user.username}
-          class="form-control"
-          id="username"
-          placeholder="name@example.com" />
-        <label for="username" class="form-label">Usuario</label>
-        <span class="text-danger" />
-      </div>
-
-      <div class="form-floating mb-3">
-        <input
-          bind:value={user.password}
-          id="password"
-          class="form-control"
-          type="password"
-          placeholder="***" />
-        <label for="password" class="form-label">Contraseña</label>
-        <span class="text-danger" />
-      </div>
-
+  <form on:submit|preventDefault={handleLogin}>
+    <div class="form-floating mb-3">
       <input
-        class="btn btn-primary w-100 mb-2"
-        type="submit"
-        name="submit"
-        value="Iniciar sesión" />
+        bind:value={user.username}
+        class="form-control"
+        id="username"
+        placeholder="name@example.com" />
+      <label for="username" class="form-label">Usuario</label>
+      <span class="text-danger" />
+    </div>
 
-      <div class="text-center">
-        <a href="/signup" class="btn btn-outline-secondary w-100">
-          Registrarse
-        </a>
-      </div>
-    </form>
-  </div>
+    <div class="form-floating mb-3">
+      <input
+        bind:value={user.password}
+        id="password"
+        class="form-control"
+        type="password"
+        placeholder="***" />
+      <label for="password" class="form-label">Contraseña</label>
+      <span class="text-danger" />
+    </div>
+
+    <input
+      class="btn btn-primary w-100 mb-2"
+      type="submit"
+      name="submit"
+      value="Iniciar sesión" />
+
+    <div class="text-center">
+      <a href="/signup" class="btn btn-outline-secondary w-100">Registrarse</a>
+    </div>
+  </form>
 </div>
