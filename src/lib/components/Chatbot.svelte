@@ -5,7 +5,6 @@
   import { goto } from '$app/navigation'
   import { config } from '$lib/config.js'
   import axios from 'axios'
-  import te from 'date-fns/locale/te'
 
   const apiDiagnosticos = config.urls.apiDiagnosticos
 
@@ -31,30 +30,20 @@
   $: esPreguntaSintoma = iter >= 0 && iter < cantidadPreguntas
 
   // si hay mensajes, si la última pregunta es pregunta o se generó el diagnóstico o no hay más preguntas, hace el efecto de scroll
-  $: if (
-    (mensajes.length > 0 && mensajes[mensajes.length - 1].esPregunta) ||
-    seGeneroDiagnostico ||
-    noHayMasPreguntas
+  /*   $: if (
+    ((mensajes.length > 0 && mensajes[mensajes.length - 1].esPregunta) ||
+      seGeneroDiagnostico ||
+      noHayMasPreguntas) &&
+    estaCargando
   ) {
-    if (estaCargando) {
-      let ultimoMensaje = mensajes[mensajes.length - 1]
-      let ultimaPregunta = ultimoMensaje.contenido
-      let opciones = ultimoMensaje.opciones || []
-
-      ultimoMensaje.contenido = '... 🤔'
-      ultimoMensaje.opciones = []
-      actualizarMensajes()
-      scrollToBottom()
-
-      setTimeout(() => {
-        mensajes[mensajes.length - 1].contenido = ultimaPregunta
-        mensajes[mensajes.length - 1].opciones = opciones
-        actualizarMensajes()
-        scrollToBottom()
-
-        estaCargando = false
-      }, 500)
-    }
+    mostrarMensajeCargando()
+  } */
+  $: if (
+    mensajes.length > 0 &&
+    mensajes[mensajes.length - 1].esPregunta &&
+    estaCargando
+  ) {
+    mostrarMensajeCargando()
   }
 
   // al cargar el componente
@@ -80,6 +69,26 @@
       actualizarMensajes()
     }
   })
+
+  function mostrarMensajeCargando() {
+    let ultimoMensaje = mensajes[mensajes.length - 1]
+    let ultimaPregunta = ultimoMensaje.contenido
+    let opciones = ultimoMensaje.opciones || []
+
+    ultimoMensaje.contenido = '... 🤔'
+    ultimoMensaje.opciones = []
+    actualizarMensajes()
+    scrollToBottom()
+
+    setTimeout(() => {
+      mensajes[mensajes.length - 1].contenido = ultimaPregunta
+      mensajes[mensajes.length - 1].opciones = opciones
+      actualizarMensajes()
+      scrollToBottom()
+
+      estaCargando = false
+    }, 500)
+  }
 
   function actualizarMensajes() {
     mensajes = mensajes
@@ -163,6 +172,8 @@
           }
         })
 
+        preguntasRespuestas.sort((a, b) => a.idPregunta - b.idPregunta)
+
         // establecer cantidad de preguntas
         cantidadPreguntas = preguntasRespuestas.length
 
@@ -240,33 +251,23 @@
         }
       }),
     }
-    axios
+
+    const response = await axios
       .post(`${apiDiagnosticos}/diagnosticos`, createDiagnostico)
-      .then((response) => {
-        if (response.status === 200) {
-          diagnosticoGenerado = response.data
-          seGeneroDiagnostico = true
-        }
-      })
       .catch(() => {
-        mensajes.push({
-          esPregunta: true,
-          contenido: '❌ No se pudo generar el diagnostico',
-        })
-        mensajes.push({
-          esPregunta: true,
-          contenido: 'Inténtelo más tarde...',
-        })
-        actualizarMensajes()
+        mostrarErrorServidor('No se pudo generar el diagnóstico')
       })
+
+    if (response.status === 200) {
+      diagnosticoGenerado = response.data
+      seGeneroDiagnostico = true
+    }
   }
 
   function verResultados() {
     // guardar el diagnostico en el store
     diagnosticoStore.set({
       id: diagnosticoGenerado.id,
-      especialidad: especialidadElegida,
-      fecha: diagnosticoGenerado.fecha,
       posiblesEnfermedades: diagnosticoGenerado.posiblesEnfermedades,
     })
     goto('/diagnosticos/resultados')

@@ -7,7 +7,6 @@ class Auth {
     )
     const base64Content = atob(paddedContent)
     const parsedUser = JSON.parse(base64Content)
-    console.log(parsedUser)
 
     return {
       isAuth: true,

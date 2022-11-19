@@ -9,6 +9,9 @@
 
   let errors = []
 
+  let date = new Date()
+  date.setDate(date.getDate() - 1)
+
   let usuarioPaciente = {
     paciente: {
       activo: true,
@@ -16,7 +19,7 @@
       celular: '942024657',
       dni: '76368626',
       email: 'abraham@mail.com',
-      fechanacimiento: format(new Date(), 'yyyy-MM-dd'),
+      fechanacimiento: format(date, 'yyyy-MM-dd'),
       nombres: 'Abraham',
       region: 'Tacna',
       sexo: 1,
@@ -36,6 +39,8 @@
   }
 
   async function registrarPaciente() {
+    errors = []
+
     let usuario = {
       nombrecompleto: `${usuarioPaciente.paciente.nombres} ${usuarioPaciente.paciente.apellidos}`,
       username: usuarioPaciente.userName,
@@ -44,27 +49,55 @@
 
     console.log(usuario)
 
-    let response = await axios.post(`${apiIdentity}/identity/`, usuario)
-    if (response.status === 200 && response.data.succeeded) {
+    let response = await axios
+      .post(`${apiIdentity}/identity/`, usuario)
+      .catch((error) => {
+        errors.push(error.response.data.errors)
+        errors = errors
+      })
+
+    if (response?.status === 200 && response?.data?.succeeded) {
       response = await axios.get(
         `${apiIdentity}/usuarios/${usuarioPaciente.userName}`
       )
-      if (response.status === 200) {
-        usuarioPaciente.paciente.usuario_id = response.data.content.id
 
+      if (response?.status === 200) {
+        usuarioPaciente.paciente.usuario_id = response.data.content.id
         usuarioPaciente.paciente.sexo = parseInt(usuarioPaciente.paciente.sexo)
 
-        response = await axios.post(
-          `${apiClientes}/pacientes/`,
-          usuarioPaciente.paciente
-        )
-        if (response.status === 201) {
+        response = await axios
+          .post(`${apiClientes}/pacientes/`, usuarioPaciente.paciente)
+          .catch((error) => {
+            if (Array.isArray(error.response.data)) {
+              errors.push(error.response.data)
+            } else if (error.response.data.errors) {
+              errors.push(
+                ...getValidationErrorMessages(error.response.data.errors)
+              )
+            }
+            errors = errors
+          })
+        if (response?.status === 201) {
           goto('/login')
         }
       }
     }
   }
+
+  function getValidationErrorMessages(errors) {
+    return Array.from(Object.entries(errors).map(([_, v]) => v[v.length - 1]))
+  }
 </script>
+
+<div>
+  {#if errors.length > 0}
+    <div class="alert alert-danger">
+      {#each errors as error}
+        <div>{error}</div>
+      {/each}
+    </div>
+  {/if}
+</div>
 
 <div class="col-sm-6">
   <div class="card p-0">
@@ -92,7 +125,8 @@
         <input
           bind:value={usuarioPaciente.paciente.dni}
           class="form-control"
-          id="dni" />
+          id="dni"
+          maxlength="8" />
         <label for="dni" class="form-label">DNI</label>
         <span class="text-danger" />
       </div>
@@ -111,7 +145,8 @@
         <input
           bind:value={usuarioPaciente.paciente.celular}
           class="form-control"
-          id="celular" />
+          id="celular"
+          maxlength="9" />
         <label for="celular" class="form-label">Celular</label>
         <span class="text-danger" />
       </div>
@@ -178,7 +213,9 @@
           bind:value={usuarioPaciente.paciente.fechanacimiento}
           class="form-control"
           id="fechaNacimiento"
-          type="date" />
+          type="date"
+          min="1900-01-01"
+          max={format(new Date(), 'yyyy-MM-dd')} />
         <label for="fechaNacimiento" class="form-label">
           Fecha de nacimiento
         </label>

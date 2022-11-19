@@ -33,7 +33,14 @@
       Cookies.set('AuthorizationToken', `Bearer ${accessToken}`, {
         expires: 1 / 24,
       })
-      userStore.set(auth.extractUserFromToken(accessToken))
+      userStore.set({
+        ...auth.extractUserFromToken(accessToken),
+        profile: '/img/user.png',
+      })
+
+      userStore.subscribe((value) => {
+        console.log('Login', value)
+      })
 
       correctLogin = true
       goto('/')
@@ -52,7 +59,7 @@
 
   {#if correctLogin}
     <div class="alert alert-success">
-      <p>Ha iniciado sesión correctamente</p>
+      <div>Ha iniciado sesión correctamente</div>
     </div>
   {/if}
 

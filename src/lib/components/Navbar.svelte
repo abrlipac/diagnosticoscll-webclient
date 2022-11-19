@@ -1,8 +1,11 @@
 <script>
-  import { get } from 'svelte/store'
   import { userStore } from '$lib/store.js'
 
-  let currentUser = get(userStore)
+  let currentUser
+  userStore.subscribe((value) => {
+    currentUser = value
+    console.log('Navbar', currentUser)
+  })
 
   const opcionesPaciente = [
     {
@@ -28,6 +31,8 @@
       Reportes: [{ 'Ver reporte de salud general': '/reportes/general' }],
     },
   ]
+
+  console.log('Navbar', currentUser.role)
 
   let opciones =
     currentUser.role === 'Paciente'
@@ -63,6 +68,7 @@
               <a
                 class="nav-link dropdown-toggle"
                 href={'#'}
+                id={Object.keys(opcion)}
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -96,7 +102,6 @@
                 src={currentUser.profile}
                 class="logo"
                 alt="foto de usuario" />
-              <b>Bienvenido</b>
               {currentUser.name}
               <span class="caret" />
             </a>

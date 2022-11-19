@@ -1,1 +1,2 @@
-export { default as component } from "..\\..\\..\\src\\routes\\diagnosticos\\nuevo\\+page.svelte";
+import * as shared from "..\\..\\..\\src\\routes\\cuenta\\logout\\+page.js";
+export { shared };
