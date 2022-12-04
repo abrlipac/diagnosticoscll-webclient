@@ -1,50 +1,20 @@
 <script>
-  import { userStore } from '$lib/store.js'
+  import { goto } from '$app/navigation'
+  import { toLocalStorage, userFallbackValue } from '$lib/session.js'
+  import { writable } from 'svelte/store'
 
-  let currentUser
-  userStore.subscribe((value) => {
-    currentUser = value
-    console.log('Navbar', currentUser)
-  })
+  export let usuarioActual
+  export let opciones
 
-  const opcionesPaciente = [
-    {
-      Diagnósticos: [
-        { 'Generar diagnóstico': '/diagnosticos/nuevo' },
-        { 'Editar síntomas de diagnóstico': '/diagnosticos/paciente/editar' },
-        { 'Visualizar diagnósticos': '/diagnosticos/paciente' },
-      ],
-    },
-    {
-      Reportes: [{ 'Ver reporte de salud': '/reportes/paciente' }],
-    },
-  ]
-
-  const opcionesAdmin = [
-    {
-      Diagnósticos: [{ 'Visualizar diagnósticos': '/diagnosticos' }],
-    },
-    {
-      Pacientes: [{ 'Visualizar pacientes': '/pacientes' }],
-    },
-    {
-      Reportes: [{ 'Ver reporte de salud general': '/reportes/general' }],
-    },
-  ]
-
-  console.log('Navbar', currentUser.role)
-
-  let opciones =
-    currentUser.role === 'Paciente'
-      ? opcionesPaciente
-      : currentUser.role === 'Admin'
-      ? opcionesAdmin
-      : []
+  async function cerrarSesionHandler() {
+    toLocalStorage(writable(userFallbackValue), 'user')
+    await goto('/auth/login')
+  }
 </script>
 
 <nav class="navbar navbar-expand-lg border-bottom">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="/{usuarioActual.role.toLowerCase()}">
       <img src="/img/logo1.png" class="logo" alt="Logo de Clínica La Luz" />
       Diagnósticos
     </a>
@@ -62,7 +32,7 @@
       class="collapse navbar-collapse justify-content-between"
       id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        {#if currentUser.isAuth}
+        {#if usuarioActual.isAuth}
           {#each opciones as opcion}
             <li class="nav-item dropdown">
               <a
@@ -88,7 +58,7 @@
         {/if}
       </ul>
 
-      {#if currentUser.isAuth}
+      {#if usuarioActual.isAuth}
         <ul class="list-unstyled ms-auto mb-2 mb-lg-0">
           <li class="nav-item dropdown">
             <a
@@ -99,23 +69,25 @@
               data-bs-toggle="dropdown"
               aria-expanded="false">
               <img
-                src={currentUser.profile}
+                src={usuarioActual.profile}
                 class="logo"
                 alt="foto de usuario" />
-              {currentUser.name}
+              {usuarioActual.name}
               <span class="caret" />
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item" href="/cuenta/perfil">
+                <a class="dropdown-item" href="/paciente/perfil">
                   Perfil de usuario
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="/cuenta/2fa">Agregar 2FA</a>
+                <a class="dropdown-item" href="/paciente/2fa">Agregar 2FA</a>
               </li>
               <li>
-                <a class="dropdown-item" href="/cuenta/logout">Cerrar sesión</a>
+                <button class="dropdown-item" on:click={cerrarSesionHandler}>
+                  Cerrar sesión
+                </button>
               </li>
             </ul>
           </li>
@@ -123,10 +95,14 @@
       {:else}
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item mx-1">
-            <a class="nav-link text-primary" href="/login">Iniciar sesión</a>
+            <a class="nav-link text-primary" href="/auth/login">
+              Iniciar sesión
+            </a>
           </li>
           <li class="nav-item mx-1">
-            <a class="nav-link text-secondary" href="/signup">Registrarse</a>
+            <a class="nav-link text-secondary" href="/auth/signup">
+              Registrarse
+            </a>
           </li>
         </ul>
       {/if}

@@ -4,7 +4,7 @@ const actor = 'Paciente'
 const nombreCasoUso = 'Generar diagnóstico'
 
 test(`Un ${actor} espera que pueda "${nombreCasoUso}"`, async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/paciente')
 
 	let iter = 1
 

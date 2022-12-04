@@ -66,10 +66,8 @@
       .put(`${apiDiagnosticos}/diagnosticos`, editarDiagnostico)
       .then((response) => {
         if (response.status === 200) {
-          //diagnosticoGenerado = response.data
-          //console.log(diagnosticoGenerado)
           seGeneroDiagnostico = true
-          goto(`/diagnosticos/ver?id=${diagnostico.id}`)
+          goto(`/paciente/diagnosticos/ver?id=${diagnostico.id}`)
         }
       })
       .catch((e) => console.log(e))
@@ -84,7 +82,7 @@
 </div>
 
 {#if preguntas}
-  <div class="card my-3">
+  <div class="card my-3 px-0">
     <div class="card-header">
       <h4 class="text-center">Detalles de diagnóstico</h4>
     </div>
@@ -124,7 +122,7 @@
     <div class="card-footer">
       <button
         type="button"
-        class="btn btn-primary w-100 mt-3"
+        class="btn btn-primary w-100"
         on:click|preventDefault={verResultados}>
         Ver resultados
       </button>

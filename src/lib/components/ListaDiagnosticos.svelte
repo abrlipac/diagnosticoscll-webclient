@@ -71,13 +71,13 @@
           <td>
             {#if accion === 'editar'}
               <a
-                href="/diagnosticos/editar?id={enfermedad.id}"
+                href="/paciente/diagnosticos/editar?id={enfermedad.id}"
                 class="btn btn-outline-warning">
                 Editar
               </a>
             {/if}
             <a
-              href="/diagnosticos/ver?id={enfermedad.id}"
+              href="/paciente/diagnosticos/ver?id={enfermedad.id}"
               class="btn btn-outline-primary">
               Ver
             </a>

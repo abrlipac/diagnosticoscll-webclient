@@ -9,6 +9,8 @@
 
   let especialidades
   let preguntas
+  let enfermedadMasProbable
+  let seCargoEnfermedadMasProbable = false
 
   export let id = 1
 
@@ -17,6 +19,8 @@
     let date = new Date(diagnostico.fecha)
     diagnostico.fecha = date.toLocaleDateString()
     diagnostico.hora = date.toLocaleTimeString()
+
+    
 
     await getEspecialidades()
     diagnostico.nombreEspecialidad = especialidades.find(
@@ -58,7 +62,7 @@
   }
 </script>
 
-<div class="card my-3">
+<div class="card my-3 px-0">
   <div class="card-header">
     <h4 class="text-center">Datos del diagnóstico</h4>
   </div>
@@ -81,7 +85,7 @@
 </div>
 
 {#if diagnostico.posiblesEnfermedades}
-  <div class="card my-3">
+  <div class="card my-3 px-0">
     <div class="card-header">
       <h4 class="text-center">Posibles enfermedades</h4>
     </div>
@@ -107,8 +111,27 @@
   </div>
 {/if}
 
+{#if seCargoEnfermedadMasProbable}
+  <div class="card mb-3 px-0">
+    <div class="card-header">
+      <h4 class="text-center mb-0">
+        Enfermedad más probable
+      </h4>
+    </div>
+    <div class="card-body">
+      <h5 class="fw-bold text-center text-primary">
+        {diagnostico.posiblesEnfermedades[0].nombre}
+      </h5>
+      <h5>Descripción</h5>
+      <p>{enfermedadMasProbable.descripcion}</p>
+      <h5>Tratamiento</h5>
+      <p>{enfermedadMasProbable.tratamiento}</p>
+    </div>
+  </div>
+{/if}
+
 {#if diagnostico.preguntas}
-  <div class="card my-3">
+  <div class="card my-3 px-0">
     <div class="card-header">
       <h4 class="text-center">Detalles del diagnóstico</h4>
     </div>

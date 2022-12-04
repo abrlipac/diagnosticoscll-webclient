@@ -16,18 +16,18 @@
     paciente: {
       activo: true,
       apellidos: 'Lipa Calabilla',
-      celular: '942024657',
-      dni: '76368626',
-      email: 'abraham@mail.com',
+      celular: Math.random() * 1000000000,
+      dni: Math.random() * 80000000,
+      email: `abraham${Math.random() * 100}@mail.com`,
       fechanacimiento: format(date, 'yyyy-MM-dd'),
       nombres: 'Abraham',
       region: 'Tacna',
       sexo: 1,
-      usuario_id: '113',
+      usuario_id: '',
     },
     password: '123456',
     repetirPassword: '123456',
-    userName: 'persona10',
+    userName: `usuario${Math.random() * 100}`
   }
 
   const handleSignUp = () => {
@@ -78,7 +78,7 @@
             errors = errors
           })
         if (response?.status === 201) {
-          goto('/login')
+          goto('/auth/login')
         }
       }
     }
@@ -265,7 +265,7 @@
   <button class="btn btn-primary mt-2 col-12" on:click={handleSignUp}>
     Registrarse
   </button>
-  <a href="/login" class="btn btn-outline-secondary mt-2 col-12">
+  <a href="/auth/login" class="btn btn-outline-secondary mt-2 col-12">
     Iniciar sesión
   </a>
 </div>

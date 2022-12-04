@@ -1,10 +1,12 @@
 <script>
   import axios from 'axios'
   import Cookies from 'js-cookie'
-  import { userStore } from '$lib/store.js'
   import { goto } from '$app/navigation'
   import auth from '$lib/auth.js'
   import { config } from '$lib/config.js'
+  import { userStore } from '$lib/store.js'
+  import { toLocalStorage } from '$lib/session.js'
+  import { writable } from 'svelte/store'
 
   const apiIdentity = config.urls.apiIdentity
 
@@ -33,17 +35,15 @@
       Cookies.set('AuthorizationToken', `Bearer ${accessToken}`, {
         expires: 1 / 24,
       })
-      userStore.set({
-        ...auth.extractUserFromToken(accessToken),
-        profile: '/img/user.png',
-      })
-
-      userStore.subscribe((value) => {
-        console.log('Login', value)
-      })
-
+      toLocalStorage(
+        writable({
+          ...auth.extractUserFromToken(accessToken),
+          profile: '/img/user.png',
+        }),
+        'user'
+      )
       correctLogin = true
-      goto('/')
+      goto(`/${$userStore.role.toLowerCase()}`)
     }
   }
 </script>
@@ -92,7 +92,9 @@
       value="Iniciar sesión" />
 
     <div class="text-center">
-      <a href="/signup" class="btn btn-outline-secondary w-100">Registrarse</a>
+      <a href="/auth/signup" class="btn btn-outline-secondary w-100">
+        Registrarse
+      </a>
     </div>
   </form>
 </div>

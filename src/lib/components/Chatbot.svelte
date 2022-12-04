@@ -29,15 +29,6 @@
   // actualiza si es pregunta de síntoma o no
   $: esPreguntaSintoma = iter >= 0 && iter < cantidadPreguntas
 
-  // si hay mensajes, si la última pregunta es pregunta o se generó el diagnóstico o no hay más preguntas, hace el efecto de scroll
-  /*   $: if (
-    ((mensajes.length > 0 && mensajes[mensajes.length - 1].esPregunta) ||
-      seGeneroDiagnostico ||
-      noHayMasPreguntas) &&
-    estaCargando
-  ) {
-    mostrarMensajeCargando()
-  } */
   $: if (
     mensajes.length > 0 &&
     mensajes[mensajes.length - 1].esPregunta &&
@@ -58,17 +49,20 @@
     // si hay especialidades, mostrar la primera pregunta (especialidad)
     if (response?.status === 200 && response?.data) {
       especialidades = [...response.data.items]
-
-      mensajes.push({
-        esPregunta: true,
-        contenido: 'Elija una especialidad 👇',
-        opciones: especialidades.map((especialidad) => especialidad.nombre),
-        opcionElegida: '',
-      })
-
-      actualizarMensajes()
+      mostrarPreguntaEspecialidad()
     }
   })
+
+  function mostrarPreguntaEspecialidad() {
+    mensajes.push({
+      esPregunta: true,
+      contenido: 'Elija una especialidad 👇',
+      opciones: especialidades.map((especialidad) => especialidad.nombre),
+      opcionElegida: '',
+    })
+
+    actualizarMensajes()
+  }
 
   function mostrarMensajeCargando() {
     let ultimoMensaje = mensajes[mensajes.length - 1]
@@ -270,7 +264,7 @@
       id: diagnosticoGenerado.id,
       posiblesEnfermedades: diagnosticoGenerado.posiblesEnfermedades,
     })
-    goto('/diagnosticos/resultados')
+    goto('/paciente/diagnosticos/resultados')
   }
 
   function scrollToBottom() {
