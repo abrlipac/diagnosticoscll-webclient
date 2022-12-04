@@ -18,8 +18,5 @@ export const config = {
     apiPersonal: envIsDev
       ? 'http://localhost:10004'
       : 'https://diag-cll-personal-api.azurewebsites.net',
-  },
-  secretKey: envIsDev
-    ? 'DwkdopIDAISOPDQWD59AS8D9AWD2ASD9sd59qwd'
-    : process.env.SECRET_KEY,
+  }
 }
