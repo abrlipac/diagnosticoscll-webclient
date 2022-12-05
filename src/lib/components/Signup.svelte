@@ -15,19 +15,19 @@
   let usuarioPaciente = {
     paciente: {
       activo: true,
-      apellidos: 'Lipa Calabilla',
-      celular: Math.random() * 1000000000,
-      dni: Math.random() * 80000000,
-      email: `abraham${Math.random() * 100}@mail.com`,
+      apellidos: '',
+      celular: '',
+      dni: '',
+      email: '',
       fechanacimiento: format(date, 'yyyy-MM-dd'),
-      nombres: 'Abraham',
-      region: 'Tacna',
+      nombres: '',
+      region: '',
       sexo: 1,
       usuario_id: '',
     },
-    password: '123456',
-    repetirPassword: '123456',
-    userName: `usuario${Math.random() * 100}`
+    password: '',
+    repetirPassword: '',
+    userName: ``
   }
 
   const handleSignUp = () => {
